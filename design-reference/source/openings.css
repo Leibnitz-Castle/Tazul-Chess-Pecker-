@@ -1,0 +1,157 @@
+/* ============================================================
+   Aperturas Pecker — module styles
+   ============================================================ */
+
+.serif-title {
+  font-family: 'Lora', Georgia, serif;
+  font-weight: 600; font-size: 28px; letter-spacing: -0.01em; color: var(--text);
+  line-height: 1.16;
+}
+
+/* ---- module tabs ---- */
+.otabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line-soft); flex-wrap: wrap; }
+.otab {
+  height: 40px; padding: 0 14px; font-size: 13.5px; font-weight: 600; color: var(--text-3);
+  border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .14s, border-color .16s;
+}
+.otab:hover { color: var(--text-2); }
+.otab.on { color: var(--amber); border-bottom-color: var(--amber); }
+
+/* ---- sub tabs (study notes) ---- */
+.subtabs { display: flex; gap: 2px; padding: 5px 6px; border-bottom: 1px solid var(--line-soft); overflow-x: auto; }
+.subtab {
+  height: 32px; padding: 0 12px; border-radius: 7px; font-size: 12.5px; font-weight: 600;
+  color: var(--text-3); white-space: nowrap; transition: all .14s;
+}
+.subtab:hover { color: var(--text-2); }
+.subtab.on { background: var(--surface-2); color: var(--text); }
+.study-body { padding: 18px 20px; min-height: 84px; }
+
+/* ---- repertoire folder cards ---- */
+.rep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.rep-card {
+  position: relative; overflow: hidden;
+  background:
+    linear-gradient(145deg, rgba(200,169,107,.05), transparent 40%),
+    var(--surface);
+}
+.rep-card .rep-glyph {
+  position: absolute; right: -10px; bottom: -24px; font-size: 150px; line-height: 1;
+  color: var(--text); opacity: .035; pointer-events: none; user-select: none;
+}
+.rep-card.black-rep .rep-glyph { color: #000; opacity: .14; }
+
+/* ---- line tree / list ---- */
+.tree-list { display: flex; flex-direction: column; }
+.tree-row {
+  display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 8px;
+  cursor: pointer; transition: background .14s; border: 1px solid transparent;
+}
+.tree-row:hover { background: var(--surface-2); }
+.tree-row.sel { background: rgba(200,169,107,.08); border-color: rgba(200,169,107,.22); }
+.tree-row .tname { font-size: 13.5px; font-weight: 600; color: var(--text); }
+.tree-row .tmeta { font-size: 11.5px; color: var(--text-3); }
+
+/* ---- PGN move list ---- */
+.pgn-list {
+  background: var(--surface-2); border: 1px solid var(--line-soft); border-radius: 10px;
+  padding: 10px; max-height: 320px; overflow-y: auto;
+  display: grid; grid-template-columns: 1fr; gap: 1px;
+}
+.pgn-row { display: grid; grid-template-columns: 36px 1fr 1fr; align-items: center; gap: 4px; }
+.pgn-num { font-size: 12px; color: var(--text-3); text-align: right; padding-right: 6px; }
+.pgn-mv {
+  text-align: left; font-size: 13px; font-weight: 600; color: var(--text-2);
+  padding: 4px 8px; border-radius: 6px; transition: all .12s;
+}
+.pgn-mv:hover { background: var(--surface-3); color: var(--text); }
+.pgn-mv.cur { background: var(--amber-ghost); color: var(--amber-bright); box-shadow: inset 0 0 0 1px rgba(200,169,107,.3); }
+
+/* ---- viewer layout ---- */
+.viewer-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 0.82fr); gap: 24px; align-items: start; }
+.overview-grid { display: grid; grid-template-columns: 350px 1fr; gap: 20px; align-items: start; }
+
+/* ---- tooltip ---- */
+.ctip {
+  position: fixed; z-index: 300; pointer-events: none;
+  background: var(--surface-3); border: 1px solid var(--line); border-radius: 8px;
+  padding: 9px 11px; box-shadow: var(--sh); min-width: 150px; font-size: 12px;
+  animation: fadeIn .12s ease both;
+}
+
+/* ---- opening tree graph ---- */
+.tree-canvas {
+  position: relative; width: 100%; height: 560px; overflow: hidden;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(200,169,107,.05) 1px, transparent 0) 0 0 / 26px 26px,
+    var(--surface);
+  border: 1px solid var(--line); border-radius: 14px; cursor: grab;
+}
+.tree-canvas:active { cursor: grabbing; }
+.tnode {
+  position: absolute; transform: translate(-50%, -50%);
+  display: grid; place-items: center; cursor: pointer;
+  transition: transform .18s cubic-bezier(.2,.7,.2,1);
+}
+.tnode:hover { transform: translate(-50%, -50%) scale(1.12); }
+.tnode .tnode-dot {
+  width: 38px; height: 38px; border-radius: 999px; background: var(--surface-3);
+  border: 2px solid var(--line); display: grid; place-items: center;
+  font-size: 11px; font-weight: 700; color: var(--text-2); font-family: var(--mono);
+  transition: border-color .18s, box-shadow .18s;
+}
+.tnode.sel .tnode-dot { border-color: var(--amber); box-shadow: 0 0 0 4px rgba(200,169,107,.16); color: var(--amber-bright); }
+
+/* ---- PGN import dropzone ---- */
+.dropzone {
+  border: 1.5px dashed var(--line); border-radius: 12px; background: var(--surface-2);
+  padding: 32px; text-align: center; transition: border-color .16s, background .16s;
+}
+.dropzone.drag { border-color: var(--amber); background: var(--amber-ghost); }
+.pgn-textarea {
+  width: 100%; min-height: 180px; resize: vertical; background: var(--surface-2);
+  border: 1px solid var(--line); border-radius: 10px; padding: 14px;
+  font-family: var(--mono); font-size: 12.5px; color: var(--text); line-height: 1.7;
+}
+.pgn-textarea:focus { outline: none; border-color: var(--amber); }
+
+/* ---- toggle switch ---- */
+.tgl { width: 38px; height: 22px; border-radius: 999px; background: var(--surface-3); position: relative; transition: background .16s; flex-shrink: 0; }
+.tgl.on { background: var(--amber); }
+.tgl::after { content:""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 999px; background: var(--text); transition: transform .18s cubic-bezier(.2,.7,.2,1); }
+.tgl.on::after { transform: translateX(16px); background: #1E1812; }
+
+/* ---- success banner ---- */
+.success-banner {
+  display: flex; align-items: center; gap: 14px; padding: 18px 22px; border-radius: 12px;
+  background: linear-gradient(120deg, rgba(78,138,98,.14), var(--surface)); border: 1px solid rgba(78,138,98,.32);
+  animation: bannerIn .42s cubic-bezier(.2,.7,.2,1) both;
+}
+@keyframes bannerIn { from { transform: translateY(10px); } to { transform: none; } }
+
+/* ---- eco table ---- */
+.eco-row {
+  display: grid; grid-template-columns: 64px 1fr auto; gap: 14px; align-items: center;
+  padding: 12px 14px; border-radius: 9px; cursor: pointer; transition: background .14s; border: 1px solid transparent;
+}
+.eco-row:hover { background: var(--surface-2); }
+.eco-row.sel { background: rgba(200,169,107,.07); border-color: rgba(200,169,107,.2); }
+
+.qmini { width: 100%; aspect-ratio: 1; }
+
+/* ---- focus-visible accessibility ---- */
+.btn:focus-visible, .otab:focus-visible, .subtab:focus-visible, .pgn-mv:focus-visible,
+.tree-row:focus-visible, .eco-row:focus-visible, .chip:focus-visible, .nav-item:focus-visible,
+.tnode:focus-visible {
+  outline: 2px solid var(--amber); outline-offset: 2px;
+}
+
+.import-grid { display: grid; grid-template-columns: 1fr 0.85fr; gap: 20px; align-items: start; }
+
+@media (max-width: 980px) {
+  .rep-grid { grid-template-columns: 1fr; }
+  .viewer-grid { grid-template-columns: 1fr; }
+  .overview-grid { grid-template-columns: 1fr; }
+  .import-grid { grid-template-columns: 1fr; }
+  .serif-title { font-size: 24px; }
+}

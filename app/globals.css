@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Tazul Chess Platform — Design Tokens & Global Styles
+   Dark mode only. Warm analysis-room aesthetic.
+   ============================================================ */
+
+:root {
+  --bg:            #161311;
+  --bg-2:          #14110F;
+  --surface:       #26211D;
+  --surface-2:     #211C18;
+  --surface-3:     #2F2924;
+  --line:          #3B342D;
+  --line-soft:     #2C2620;
+
+  --amber:         #C8A96B;
+  --amber-bright:  #D6B77A;
+  --amber-dim:     #8D6E3E;
+  --amber-ghost:   rgba(200, 169, 107, 0.10);
+  --amber-glow:    rgba(200, 169, 107, 0.24);
+  --green:         #4E8A62;
+  --green-ghost:   rgba(78, 138, 98, 0.14);
+  --red:           #A44D45;
+  --red-ghost:     rgba(164, 77, 69, 0.15);
+  --warning:       #C48A41;
+  --warning-ghost: rgba(196, 138, 65, 0.14);
+  --blue:          #6E8BAB;
+
+  --text:          #F2ECE3;
+  --text-2:        #C1B29F;
+  --text-3:        #8B7E72;
+
+  --sq-light:      #D7C1A0;
+  --sq-dark:       #8A6A45;
+
+  --sidebar-w: 232px;
+  --topbar-h:  64px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: rgba(200,169,107,.30); color: var(--text); }
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+input, select { font-family: inherit; }
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #3a342d; border-radius: 999px;
+  border: 2px solid transparent; background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: #4a4138; background-clip: padding-box; }
+
+/* ============================================================
+   Typography helpers
+   ============================================================ */
+.eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--text-3);
+}
+.mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-feature-settings: "tnum"; }
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* ============================================================
+   Skeleton
+   ============================================================ */
+.skeleton {
+  background: linear-gradient(100deg, #26211D 30%, #2F2924 50%, #26211D 70%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+/* ============================================================
+   Progress bar
+   ============================================================ */
+.progress { height: 7px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--amber), var(--amber-bright));
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(.2,.7,.2,1);
+  transform-origin: left center;
+}
+.progress-bar.green { background: linear-gradient(90deg, #3C6F4E, var(--green)); }
+
+/* ============================================================
+   Animations (referenced from Tailwind config)
+   ============================================================ */
+@keyframes cardIn {
+  from { transform: translateY(12px) scale(.985); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+@keyframes fadeIn {
+  from { transform: translateY(5px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+@keyframes fadeUp {
+  from { transform: translateY(12px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+@keyframes barFill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes heatIn {
+  from { transform: scale(.35); }
+  to   { transform: scale(1); }
+}
+@keyframes pulseCorrect {
+  0%   { transform: scale(1);     box-shadow: 0 0 0 0 rgba(78,138,98,0); }
+  35%  { transform: scale(1.012); box-shadow: 0 0 0 5px rgba(78,138,98,.30); }
+  100% { transform: scale(1);     box-shadow: 0 0 0 0 rgba(78,138,98,0); }
+}
+@keyframes glowWrong {
+  0%,100% { box-shadow: 0 0 0 0 rgba(164,77,69,0); }
+  40%     { box-shadow: 0 0 0 4px rgba(164,77,69,.34); }
+}
+@keyframes boardShake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-8px); }
+  40%, 60% { transform: translateX(8px); }
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.animate-card-in     { animation: cardIn     0.5s  cubic-bezier(.2,.7,.2,1) both; }
+.animate-fade-in     { animation: fadeIn     0.22s ease both; }
+.animate-fade-up     { animation: fadeUp     0.38s cubic-bezier(.2,.7,.2,1) both; }
+.animate-bar-fill    { animation: barFill    0.7s  cubic-bezier(.2,.7,.2,1) both; transform-origin: left center; }
+.animate-heat-in     { animation: heatIn     0.4s  cubic-bezier(.2,.7,.2,1) both; }
+.animate-pulse-correct { animation: pulseCorrect 0.55s ease both; border-radius: 10px; }
+.animate-glow-wrong  { animation: glowWrong  0.5s  ease both; border-radius: 10px; }
+.animate-board-shake { animation: boardShake 0.4s  cubic-bezier(.36,.07,.19,.97); }
+.animate-spin        { animation: spin       0.7s  linear infinite; }
+.animate-shimmer     { animation: shimmer    1.4s  infinite; }
+
+/* Stagger helpers */
+.stagger > *:nth-child(1) { animation-delay: .03s; }
+.stagger > *:nth-child(2) { animation-delay: .07s; }
+.stagger > *:nth-child(3) { animation-delay: .11s; }
+.stagger > *:nth-child(4) { animation-delay: .15s; }
+.stagger > *:nth-child(5) { animation-delay: .19s; }
+.stagger > *:nth-child(6) { animation-delay: .23s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Chessground puzzle board theme lives in components/chess/chessground-theme.css,
+   scoped under .puzzle-board to avoid conflicting with @lichess-org/pgn-viewer. */
+
+/* range slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  height: 5px; border-radius: 999px;
+  background: var(--surface-2); outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px; border-radius: 999px;
+  background: linear-gradient(180deg, var(--amber-bright), var(--amber));
+  cursor: pointer; border: 3px solid var(--bg);
+  box-shadow: 0 2px 8px rgba(200,169,107,.4);
+}

@@ -1,0 +1,85 @@
+/* ============================================================
+   Tazul Chess — responsive layout grids + range sliders
+   ============================================================ */
+
+/* utilities */
+.hide-mobile { display: inherit; }
+.show-mobile { display: none; }
+.text-right { text-align: right; }
+
+/* ---- Landing ---- */
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; min-height: 56vh; }
+.feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); }
+.stats-bar > div:not(:last-child) { border-right: 1px solid var(--line-soft); }
+
+/* ---- Dashboard ---- */
+.dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
+.rec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+/* ---- Practice ---- */
+.set-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(304px, 1fr)); gap: 20px; }
+
+/* ---- Play ---- */
+.play-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(330px, 1fr); gap: 28px; align-items: start; }
+
+/* ---- generic ---- */
+.two-grid   { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; align-items: start; }
+.three-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.four-grid  { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.swatch-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+.board-state-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+/* ---- range sliders ---- */
+.range { -webkit-appearance: none; appearance: none; height: 5px; border-radius: 999px; background: var(--surface-2); outline: none; }
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 999px;
+  background: linear-gradient(180deg, var(--amber-bright), var(--amber)); cursor: pointer;
+  border: 3px solid var(--bg); box-shadow: 0 2px 8px rgba(245,158,11,.4);
+}
+.range::-moz-range-thumb {
+  width: 20px; height: 20px; border-radius: 999px; border: 3px solid var(--bg);
+  background: var(--amber); cursor: pointer; box-shadow: 0 2px 8px rgba(245,158,11,.4);
+}
+.range-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; margin: 0;
+  background: transparent; pointer-events: none; height: 28px;
+}
+.range-overlay::-webkit-slider-thumb { pointer-events: auto; margin-top: 0; }
+.range-overlay::-moz-range-thumb { pointer-events: auto; }
+
+select.input option { background: var(--surface-2); color: var(--text); }
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 1100px) {
+  .dash-grid { grid-template-columns: repeat(2, 1fr); }
+  .dash-grid > .card { grid-column: span 1 !important; }
+  .dash-grid > .card:nth-child(2), .dash-grid > .card:last-child { grid-column: span 2 !important; }
+  .rec-grid { grid-template-columns: 1fr; }
+  .four-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 980px) {
+  .hide-mobile { display: none !important; }
+  .show-mobile { display: inline-flex !important; }
+  .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+  .hero-grid > div:last-child { order: -1; max-width: 380px; margin: 0 auto; }
+  .feat-grid { grid-template-columns: 1fr; }
+  .play-grid { grid-template-columns: 1fr; gap: 18px; }
+  .two-grid, .three-grid { grid-template-columns: 1fr; }
+  .board-state-grid { grid-template-columns: 1fr; max-width: 340px; }
+  .swatch-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .dash-grid { grid-template-columns: 1fr; }
+  .dash-grid > .card { grid-column: span 1 !important; }
+  .four-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .stats-bar > div:nth-child(2) { border-right: none; }
+  .stats-bar > div { padding: 14px 0 !important; }
+  .display { font-size: 40px; }
+  .set-grid { grid-template-columns: 1fr; }
+}

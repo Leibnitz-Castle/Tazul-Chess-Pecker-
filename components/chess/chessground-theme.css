@@ -1,0 +1,92 @@
+/* ============================================================
+   Chessground — Tazul puzzle board theme
+   Scoped under .puzzle-board to avoid conflicting with
+   @lichess-org/pgn-viewer which also uses .cg-wrap internals.
+   ============================================================ */
+
+/* Import base chessground styles globally (not scoped) */
+@import "chessground/assets/chessground.base.css";
+@import "chessground/assets/chessground.cburnett.css";
+
+/* ---- Wrapper ---- */
+.puzzle-board .cg-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 14px 40px rgba(0,0,0,.40), 0 0 0 1px rgba(0,0,0,.35);
+  display: block;
+}
+
+.puzzle-board cg-container {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.puzzle-board cg-board {
+  border-radius: 0;
+  /* Board colors — chessground v9 uses background-color (light sq) + SVG image (dark sq) */
+  background-color: #D7C1A0 !important;
+  background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOng9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZpZXdCb3g9IjAgMCA4IDgiIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyI+PGcgaWQ9ImEiPjxnIGlkPSJiIj48ZyBpZD0iYyI+PGcgaWQ9ImQiPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGlkPSJlIiBvcGFjaXR5PSIwIi8+PHVzZSB4PSIxIiB5PSIxIiBocmVmPSIjZSIgeDpocmVmPSIjZSIvPjxyZWN0IHk9IjEiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGlkPSJmIiBmaWxsPSIjOEE2QTQ1Ii8+PHVzZSB4PSIxIiB5PSItMSIgaHJlZj0iI2YiIHg6aHJlZj0iI2YiLz48L2c+PHVzZSB4PSIyIiBocmVmPSIjZCIgeDpocmVmPSIjZCIvPjwvZz48dXNlIHg9IjQiIGhyZWY9IiNjIiB4OmhyZWY9IiNjIi8+PC9nPjx1c2UgeT0iMiIgaHJlZj0iI2IiIHg6aHJlZj0iI2IiLz48L2c+PHVzZSB5PSI0IiBocmVmPSIjYSIgeDpocmVmPSIjYSIvPjwvc3ZnPg==') !important;
+}
+
+/* ---- Square highlights (selected, last-move, etc.) ---- */
+
+/* Last move highlight — amber tint */
+.puzzle-board cg-board square.last-move.light {
+  background-color: rgba(200,169,107,.42);
+}
+
+.puzzle-board cg-board square.last-move.dark {
+  background-color: rgba(200,169,107,.34);
+}
+
+/* Selected square */
+.puzzle-board cg-board square.selected.light {
+  background-color: rgba(200,169,107,.55);
+}
+
+.puzzle-board cg-board square.selected.dark {
+  background-color: rgba(200,169,107,.45);
+}
+
+/* Move destinations */
+.puzzle-board cg-board square.move-dest {
+  background: radial-gradient(rgba(0,0,0,.20) 22%, transparent 23%);
+  background-size: 100% 100%;
+}
+
+.puzzle-board cg-board square.oc.move-dest {
+  background: radial-gradient(transparent 0%, transparent 79%, rgba(0,0,0,.22) 80%);
+}
+
+/* Check indicator */
+.puzzle-board cg-board square.check {
+  background: radial-gradient(ellipse at center, rgba(240,60,50,.85) 0%, rgba(240,60,50,.1) 100%);
+}
+
+/* Premove */
+.puzzle-board cg-board square.premove-dest {
+  background: radial-gradient(rgba(108,75,134,.50) 22%, transparent 23%);
+}
+
+/* Coordinates */
+.puzzle-board .cg-wrap coords.ranks,
+.puzzle-board .cg-wrap coords.files {
+  pointer-events: none;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  opacity: 0.7;
+}
+
+/* Piece size — cburnett SVGs fill their cell */
+.puzzle-board .cg-wrap piece {
+  background-size: cover;
+}
+
+/* Ghost piece while dragging */
+.puzzle-board .cg-wrap piece.ghost {
+  opacity: 0.3;
+}

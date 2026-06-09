@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Tazul Chess Platform</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Lora:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="layout.css" />
+  <link rel="stylesheet" href="openings.css" />
+  <link rel="stylesheet" href="warehouse.css" />
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- chess.js (move validation) — UMD global `Chess` -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+  <!-- React + Babel -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <!-- app (order matters: data -> ui -> board -> pages -> app) -->
+  <script type="text/babel" src="js/data.jsx"></script>
+  <script type="text/babel" src="js/ui.jsx"></script>
+  <script type="text/babel" src="js/chess-board.jsx"></script>
+  <script type="text/babel" src="js/pages-landing-dash.jsx"></script>
+  <script type="text/babel" src="js/pages-practice-create.jsx"></script>
+  <script type="text/babel" src="js/pages-play.jsx"></script>
+  <script type="text/babel" src="js/pages-misc.jsx"></script>
+  <script type="text/babel" src="js/data-openings.jsx"></script>
+  <script type="text/babel" src="js/openings-shared.jsx"></script>
+  <script type="text/babel" src="js/openings-pages-1.jsx"></script>
+  <script type="text/babel" src="js/openings-pages-2.jsx"></script>
+  <script type="text/babel" src="js/openings-pages-3.jsx"></script>
+  <script type="text/babel" src="js/openings-pages-4.jsx"></script>
+  <script type="text/babel" src="js/openings-module.jsx"></script>
+  <script type="text/babel" src="js/data-warehouse.jsx"></script>
+  <script type="text/babel" src="js/warehouse-shared.jsx"></script>
+  <script type="text/babel" src="js/warehouse-pages-1.jsx"></script>
+  <script type="text/babel" src="js/warehouse-pages-2.jsx"></script>
+  <script type="text/babel" src="js/warehouse-pages-3.jsx"></script>
+  <script type="text/babel" src="js/warehouse-pages-4.jsx"></script>
+  <script type="text/babel" src="js/warehouse-module.jsx"></script>
+  <script type="text/babel" src="js/app.jsx"></script>
+</body>
+</html>

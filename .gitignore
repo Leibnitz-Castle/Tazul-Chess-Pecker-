@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Production builds
+dist/
+build/
+
+# Test coverage
+coverage/
+
+# Environment variables — never commit real secrets
+.env
+.env.*
+!.env.example
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Chess book data — NOT included in public repo (copyright / proprietary dataset)
+# Provide your own PGN exports. See docs/training-items-contract.md for the schema.
+data/raw/
+data/exports/
+data/seeds/training_items_playable.json
+*.pgn
+*.cbh
+*.cbv
+*.pdf
+*.epub
+
+# Database files
+*.sqlite
+*.db
+postgres-data/
+pgdata/
+
+# Prisma generated client (regenerated on postinstall)
+.prisma/client
+
+# TypeScript build cache
+tsconfig.tsbuildinfo
+
+# Private project memory — local only, not for public repo
+memory/
+
+# IDE / editor
+.vscode/settings.json
+.idea/

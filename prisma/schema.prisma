@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Core exercise library ────────────────────────────────────────────────────
+
+model TrainingItem {
+  id             String   @id @default(uuid())
+  sourceId       String?  @map("source_id")
+  fen            String
+  sideToMove     String   @map("side_to_move")       // "w" | "b"
+  solutionMoves  String[] @map("solution_moves")      // UCI array
+  solutionSan    String?  @map("solution_san")
+  sourceName     String   @map("source_name")
+  sourceAuthor   String   @map("source_author")
+  sourceYear     Int      @map("source_year")
+  chapter        String?
+  exerciseNumber Int?     @map("exercise_number")
+  difficulty     String?                              // "easy" | "intermediate" | "advanced" | null
+  theme          String?
+  tags           String[]
+  itemType       String   @map("item_type")           // "calculation"
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  attempts        PuzzleAttempt[]
+  seriesItems     TrainingSeriesItem[]
+  exerciseAttempts ExerciseAttempt[]
+
+  @@index([difficulty])
+  @@index([chapter])
+  @@index([sideToMove])
+  @@index([sourceName])
+  @@index([chapter, difficulty])
+  @@map("training_items")
+}
+
+// ── Legacy attempt log (standalone puzzles) ──────────────────────────────────
+
+model PuzzleAttempt {
+  id             String   @id @default(uuid())
+  trainingItemId String   @map("training_item_id")
+  isCorrect      Boolean  @map("is_correct")
+  movePlayed     String   @map("move_played")
+  expectedMove   String   @map("expected_move")
+  timeMs         Int      @map("time_ms")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  trainingItem   TrainingItem @relation(fields: [trainingItemId], references: [id])
+
+  @@index([trainingItemId])
+  @@index([createdAt])
+  @@map("puzzle_attempts")
+}
+
+// ── Woodpecker training series ───────────────────────────────────────────────
+
+model TrainingSeries {
+  id           String   @id @default(uuid())
+  devUserId    String   @default("dev-user-001") @map("dev_user_id")
+  title        String
+  sourceName   String   @map("source_name")
+  chapter      String?
+  mode         String   @default("CHAPTER")  // CHAPTER | FULL_BOOK | FAILED_ONLY | CUSTOM
+  status       String   @default("ACTIVE")   // ACTIVE | COMPLETED | ARCHIVED
+  totalItems   Int      @map("total_items")
+  currentIndex Int      @default(0) @map("current_index")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  cycles TrainingCycle[]
+  items  TrainingSeriesItem[]
+
+  @@index([devUserId])
+  @@index([status])
+  @@map("training_series")
+}
+
+model TrainingSeriesItem {
+  id             String   @id @default(uuid())
+  seriesId       String   @map("series_id")
+  trainingItemId String   @map("training_item_id")
+  orderIndex     Int      @map("order_index")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  series       TrainingSeries @relation(fields: [seriesId], references: [id], onDelete: Cascade)
+  trainingItem TrainingItem   @relation(fields: [trainingItemId], references: [id])
+
+  @@unique([seriesId, trainingItemId])
+  @@index([seriesId])
+  @@index([trainingItemId])
+  @@map("training_series_items")
+}
+
+model TrainingCycle {
+  id             String    @id @default(uuid())
+  seriesId       String    @map("series_id")
+  cycleNumber    Int       @map("cycle_number")
+  status         String    @default("ACTIVE")  // ACTIVE | COMPLETED
+  startedAt      DateTime  @default(now()) @map("started_at")
+  completedAt    DateTime? @map("completed_at")
+  totalExercises Int       @map("total_exercises")
+  solvedCount    Int       @default(0) @map("solved_count")
+  correctCount   Int       @default(0) @map("correct_count")
+  incorrectCount Int       @default(0) @map("incorrect_count")
+  totalTimeMs    Int       @default(0) @map("total_time_ms")
+  averageTimeMs  Int       @default(0) @map("average_time_ms")
+  accuracy       Float     @default(0)
+  bestStreak     Int       @default(0) @map("best_streak")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  series   TrainingSeries    @relation(fields: [seriesId], references: [id], onDelete: Cascade)
+  attempts ExerciseAttempt[]
+
+  @@index([seriesId])
+  @@index([cycleNumber])
+  @@map("training_cycles")
+}
+
+// ── Per-exercise attempt with series/cycle context ───────────────────────────
+
+model ExerciseAttempt {
+  id             String   @id @default(uuid())
+  trainingItemId String   @map("training_item_id")
+  seriesId       String   @map("series_id")   // denormalized for fast queries
+  cycleId        String   @map("cycle_id")
+  movePlayed     String   @map("move_played")
+  expectedMove   String   @map("expected_move")
+  isCorrect      Boolean  @map("is_correct")
+  timeMs         Int      @map("time_ms")
+  attemptNumber  Int      @map("attempt_number")
+  fen            String
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  trainingItem TrainingItem  @relation(fields: [trainingItemId], references: [id])
+  cycle        TrainingCycle @relation(fields: [cycleId], references: [id])
+
+  @@index([trainingItemId])
+  @@index([seriesId])
+  @@index([cycleId])
+  @@index([createdAt])
+  @@map("exercise_attempts")
+}
