@@ -1,31 +1,78 @@
-import { Icon } from "@/components/ui/Icon";
-import { Badge } from "@/components/ui/Badge";
+import { OpeningsModule } from "./OpeningsModule";
+import { prisma } from "@/lib/db";
+import { calculateLineMetrics, calculateRepertoireMetrics } from "@/lib/openings/opening-metrics";
 
-export default function OpeningsPage() {
-  return (
-    <div
-      className="flex flex-col items-center justify-center animate-fade-in"
-      style={{ minHeight: "70vh", textAlign: "center", gap: 16, padding: 28 }}
-    >
-      <span
-        style={{
-          width: 64,
-          height: 64,
-          borderRadius: 16,
-          display: "grid",
-          placeItems: "center",
-          background: "var(--amber-ghost)",
-          color: "var(--amber)",
-        }}
-      >
-        <Icon name="openings" size={30} />
-      </span>
-      <h1 style={{ fontSize: 30, fontWeight: 700, letterSpacing: "-0.02em" }}>Aperturas Pecker</h1>
-      <p className="text-text-secondary" style={{ fontSize: 14, maxWidth: 380 }}>
-        Opening repertoire drills from elite games. Train your lines until they&apos;re reflex.
-        Coming in a future release.
-      </p>
-      <Badge variant="amber" style={{ height: 26 }}>On the roadmap</Badge>
-    </div>
-  );
+export const dynamic = "force-dynamic";
+
+async function getRepertoires() {
+  try {
+    const reps = await prisma.openingRepertoire.findMany({
+      where: { devUserId: "dev-user-001" },
+      include: {
+        _count: { select: { lines: true, nodes: true } },
+        lines: {
+          orderBy: { orderIndex: "asc" },
+          include: {
+            attempts: {
+              select: { isCorrect: true, timeMs: true, createdAt: true },
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: "asc" },
+    });
+
+    return reps.map((rep) => {
+      const lineMetrics = rep.lines.map((l) =>
+        calculateLineMetrics(
+          l.attempts.map((a) => ({
+            isCorrect: a.isCorrect,
+            timeMs: a.timeMs,
+            createdAt: a.createdAt,
+          }))
+        )
+      );
+      const metrics = calculateRepertoireMetrics(
+        rep._count.lines,
+        rep._count.nodes,
+        lineMetrics
+      );
+
+      return {
+        id: rep.id,
+        name: rep.name,
+        color: rep.color,
+        description: rep.description,
+        sourceName: rep.sourceName,
+        metrics,
+        lines: rep.lines.map((l, i) => ({
+          id: l.id,
+          repertoireId: rep.id,
+          name: l.name,
+          eco: l.eco,
+          side: l.side,
+          pgn: l.pgn,
+          moveCount: l.moveCount,
+          isMainLine: l.isMainLine,
+          orderIndex: l.orderIndex,
+          metrics: lineMetrics[i],
+          nodes: [] as {
+            id: string;
+            san: string;
+            uci: string;
+            fenAfter: string;
+            moveNumber: number;
+            ply: number;
+          }[],
+        })),
+      };
+    });
+  } catch {
+    return [];
+  }
+}
+
+export default async function OpeningsPage() {
+  const repertoires = await getRepertoires();
+  return <OpeningsModule repertoires={repertoires} />;
 }
