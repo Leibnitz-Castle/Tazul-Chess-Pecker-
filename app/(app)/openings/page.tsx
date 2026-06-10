@@ -16,6 +16,22 @@ async function getRepertoires() {
             attempts: {
               select: { isCorrect: true, timeMs: true, createdAt: true },
             },
+            lineNodes: {
+              orderBy: { orderIndex: "asc" },
+              include: {
+                node: {
+                  select: {
+                    id: true,
+                    san: true,
+                    uci: true,
+                    fenBefore: true,
+                    fenAfter: true,
+                    moveNumber: true,
+                    ply: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -56,14 +72,15 @@ async function getRepertoires() {
           isMainLine: l.isMainLine,
           orderIndex: l.orderIndex,
           metrics: lineMetrics[i],
-          nodes: [] as {
-            id: string;
-            san: string;
-            uci: string;
-            fenAfter: string;
-            moveNumber: number;
-            ply: number;
-          }[],
+          nodes: l.lineNodes.map((ln) => ({
+            id: ln.node.id,
+            san: ln.node.san,
+            uci: ln.node.uci,
+            fenBefore: ln.node.fenBefore,
+            fenAfter: ln.node.fenAfter,
+            moveNumber: ln.node.moveNumber,
+            ply: ln.node.ply,
+          })),
         })),
       };
     });

@@ -62,6 +62,7 @@ interface LineData {
     id: string;
     san: string;
     uci: string;
+    fenBefore: string;
     fenAfter: string;
     moveNumber: number;
     ply: number;
