@@ -2,8 +2,15 @@
 
 export type OpeningColor = "WHITE" | "BLACK";
 export type OpeningSourceType = "PGN" | "CHESSBASE_EXPORT" | "MANUAL";
-export type OpeningAttemptType = "PRACTICE" | "QUIZ" | "REVIEW";
+export type OpeningAttemptType = "PRACTICE" | "QUIZ" | "REVIEW" | "SHOW_MOVE";
 export type MasteryStatus = "not_studied" | "learning" | "mastered" | "weak" | "due_for_review";
+
+export type PracticeStatus =
+  | "WAITING_USER_MOVE"
+  | "AUTO_PLAYING"
+  | "CORRECT"
+  | "INCORRECT"
+  | "LINE_COMPLETE";
 
 // ── PGN parsing ──────────────────────────────────────────────────────────────
 
