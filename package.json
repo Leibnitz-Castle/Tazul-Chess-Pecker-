@@ -13,7 +13,10 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx scripts/seed-training-items.ts",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "openings:import": "tsx scripts/import-openings.ts",
+    "openings:reimport": "tsx scripts/import-openings.ts --reimport",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@lichess-org/pgn-viewer": "^2.6.0",
