@@ -145,3 +145,119 @@ model ExerciseAttempt {
   @@index([createdAt])
   @@map("exercise_attempts")
 }
+
+// ── Opening Repertoire ───────────────────────────────────────────────────────
+
+model OpeningRepertoire {
+  id          String   @id @default(uuid())
+  devUserId   String   @default("dev-user-001") @map("dev_user_id")
+  name        String
+  color       String   // "WHITE" | "BLACK"
+  sourceType  String   @map("source_type")   // "PGN" | "CHESSBASE_EXPORT" | "MANUAL"
+  sourceName  String   @map("source_name")
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  lines    OpeningLine[]
+  nodes    OpeningMoveNode[]
+  attempts OpeningAttempt[]
+
+  @@index([devUserId])
+  @@map("opening_repertoires")
+}
+
+model OpeningLine {
+  id            String   @id @default(uuid())
+  repertoireId  String   @map("repertoire_id")
+  name          String
+  eco           String?
+  side          String   // "white" | "black"
+  pgn           String
+  startFen      String   @map("start_fen")
+  finalFen      String   @map("final_fen")
+  moveCount     Int      @map("move_count")
+  isMainLine    Boolean  @default(true) @map("is_main_line")
+  orderIndex    Int      @default(0) @map("order_index")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  repertoire OpeningRepertoire  @relation(fields: [repertoireId], references: [id], onDelete: Cascade)
+  lineNodes  OpeningLineNode[]
+  attempts   OpeningAttempt[]
+
+  @@index([repertoireId])
+  @@index([eco])
+  @@map("opening_lines")
+}
+
+model OpeningMoveNode {
+  id           String   @id @default(uuid())
+  repertoireId String   @map("repertoire_id")
+  parentId     String?  @map("parent_id")
+  moveNumber   Int      @map("move_number")
+  san          String
+  uci          String
+  fenBefore    String   @map("fen_before")
+  fenAfter     String   @map("fen_after")
+  ply          Int
+  eco          String?
+  lineName     String?  @map("line_name")
+  path         String   // e2e4.e7e5.g1f3 — unique per repertoire
+  depth        Int
+  orderIndex   Int      @default(0) @map("order_index")
+  isMainLine   Boolean  @default(false) @map("is_main_line")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  repertoire OpeningRepertoire @relation(fields: [repertoireId], references: [id], onDelete: Cascade)
+  parent     OpeningMoveNode?  @relation("NodeChildren", fields: [parentId], references: [id])
+  children   OpeningMoveNode[] @relation("NodeChildren")
+  lineNodes  OpeningLineNode[]
+  attempts   OpeningAttempt[]
+
+  @@unique([repertoireId, path])
+  @@index([repertoireId])
+  @@index([parentId])
+  @@index([fenAfter])
+  @@index([eco])
+  @@map("opening_move_nodes")
+}
+
+model OpeningLineNode {
+  id         String @id @default(uuid())
+  lineId     String @map("line_id")
+  nodeId     String @map("node_id")
+  orderIndex Int    @map("order_index")
+
+  line OpeningLine     @relation(fields: [lineId], references: [id], onDelete: Cascade)
+  node OpeningMoveNode @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+
+  @@unique([lineId, nodeId])
+  @@index([lineId])
+  @@index([nodeId])
+  @@map("opening_line_nodes")
+}
+
+model OpeningAttempt {
+  id           String   @id @default(uuid())
+  repertoireId String   @map("repertoire_id")
+  lineId       String?  @map("line_id")
+  nodeId       String   @map("node_id")
+  movePlayed   String   @map("move_played")
+  expectedMove String   @map("expected_move")
+  isCorrect    Boolean  @map("is_correct")
+  timeMs       Int      @map("time_ms")
+  attemptType  String   @default("PRACTICE") @map("attempt_type") // "PRACTICE" | "QUIZ" | "REVIEW"
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  repertoire OpeningRepertoire @relation(fields: [repertoireId], references: [id], onDelete: Cascade)
+  line       OpeningLine?      @relation(fields: [lineId], references: [id])
+  node       OpeningMoveNode   @relation(fields: [nodeId], references: [id])
+
+  @@index([repertoireId])
+  @@index([lineId])
+  @@index([nodeId])
+  @@index([createdAt])
+  @@map("opening_attempts")
+}

@@ -32,12 +32,29 @@ pnpm-debug.log*
 # Provide your own PGN exports. See docs/training-items-contract.md for the schema.
 data/raw/
 data/exports/
+data/private/
 data/seeds/training_items_playable.json
 *.pgn
 *.cbh
 *.cbv
+*.cba
+*.cbc
+*.cbe
+*.cbg
+*.cbj
+*.cbl
+*.cbm
+*.cbp
+*.cbs
+*.cbt
+*.cbtt
+*.cib
+*.cib2
+*.cit
+*.cit2
 *.pdf
 *.epub
+*.docx
 
 # Database files
 *.sqlite
