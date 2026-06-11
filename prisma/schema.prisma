@@ -146,6 +146,69 @@ model ExerciseAttempt {
   @@map("exercise_attempts")
 }
 
+// ── Dynamic Library — Biblioteca Dinámica ───────────────────────────────────
+
+model LibraryBook {
+  id              String    @id @default(uuid())
+  bookId          String    @unique @map("book_id")
+  slug            String    @unique
+  title           String
+  author          String
+  year            Int
+  techniquesTotal Int       @map("techniques_total")
+  examplesTotal   Int       @map("examples_total")
+  exportLevel     String    @default("PUBLIC_SAFE") @map("export_level")
+  generatedAt     DateTime? @map("generated_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  techniques LibraryTechnique[]
+
+  @@map("library_books")
+}
+
+model LibraryTechnique {
+  id              String   @id @default(uuid())
+  bookId          String   @map("book_id")
+  techniqueNumber Int      @map("technique_number")
+  techniqueId     String   @map("technique_id")
+  title           String
+  examplesCount   Int      @map("examples_count")
+  tags            String[]
+  difficulty      String?
+  orderIndex      Int      @map("order_index")
+  exportLevel     String   @default("PUBLIC_SAFE") @map("export_level")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  book     LibraryBook      @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  examples LibraryExample[]
+
+  @@unique([bookId, techniqueNumber])
+  @@index([bookId])
+  @@index([techniqueNumber])
+  @@map("library_techniques")
+}
+
+model LibraryExample {
+  id             String   @id @default(uuid())
+  techniqueId    String   @map("technique_id")
+  gameId         String   @map("game_id")
+  pgnIndex       Int      @map("pgn_index")
+  eco            String?
+  fenInitial     String   @map("fen_initial")
+  mainlineMoves  String[] @map("mainline_moves")
+  mainlineLength Int      @map("mainline_length")
+  orderIndex     Int      @map("order_index")
+  exportLevel    String   @default("PUBLIC_SAFE") @map("export_level")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  technique LibraryTechnique @relation(fields: [techniqueId], references: [id], onDelete: Cascade)
+
+  @@index([techniqueId])
+  @@index([fenInitial])
+  @@map("library_examples")
+}
+
 // ── Opening Repertoire ───────────────────────────────────────────────────────
 
 model OpeningRepertoire {
