@@ -16,6 +16,9 @@
     "db:studio": "prisma studio",
     "openings:import": "tsx scripts/import-openings.ts",
     "openings:reimport": "tsx scripts/import-openings.ts --reimport",
+    "library:validate": "tsx scripts/validate-library-public-safe.ts",
+    "library:import": "tsx scripts/import-library-book.ts",
+    "library:reimport": "tsx scripts/import-library-book.ts --reimport",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
