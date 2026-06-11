@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { ChessgroundBoard } from "@/components/chess/ChessgroundBoard";
-import { computePosition, canNavigateMoves, getBoardOrientation, FALLBACK_FEN } from "@/lib/library/board-utils";
+import { computePosition, canNavigateMoves, FALLBACK_FEN } from "@/lib/library/board-utils";
 
 interface ExampleData {
   id: string;
@@ -16,9 +16,11 @@ interface ExampleData {
 interface TechniqueBoardPanelProps {
   examples: ExampleData[];
   techniqueNumber: number;
+  /** Board orientation. Defaults to "white". Use Flip button to toggle — never derive from FEN. */
+  orientation?: "white" | "black";
 }
 
-export function TechniqueBoardPanel({ examples, techniqueNumber }: TechniqueBoardPanelProps) {
+export function TechniqueBoardPanel({ examples, techniqueNumber, orientation = "white" }: TechniqueBoardPanelProps) {
   const [exampleIdx, setExampleIdx] = useState(0);
   const [moveIdx, setMoveIdx] = useState(-1);
 
@@ -27,13 +29,8 @@ export function TechniqueBoardPanel({ examples, techniqueNumber }: TechniqueBoar
   const canNav = example ? canNavigateMoves(example.fenInitial) : false;
 
   const { fen, lastMove } = useMemo(
-    () => computePosition(example?.fenInitial ?? "", moves, moveIdx),
+    () => computePosition(example?.fenInitial ?? FALLBACK_FEN, moves, moveIdx),
     [example, moves, moveIdx]
-  );
-
-  const orientation = useMemo(
-    () => getBoardOrientation(fen || FALLBACK_FEN),
-    [fen]
   );
 
   function selectExample(idx: number) {

@@ -40,7 +40,11 @@ export function computePosition(
   }
 }
 
-export function getBoardOrientation(fen: string): "white" | "black" {
-  const parts = fen.split(" ");
-  return parts[1] === "b" ? "black" : "white";
+/**
+ * Returns fixed board orientation for the study viewer.
+ * Always "white" — board must NOT flip when FEN active color changes.
+ * Manual flip (if ever needed) must be an explicit user action, never automatic.
+ */
+export function getBoardOrientation(_fen?: string): "white" | "black" {
+  return "white";
 }

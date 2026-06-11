@@ -3,7 +3,13 @@ import Link from "next/link";
 interface TechniqueRow {
   id: string;
   techniqueNumber: number;
+  title: string;
   examplesCount: number;
+}
+
+/** Returns true when the title is the generic structural placeholder (e.g. "Technique 1") */
+function isStructuralTitle(title: string): boolean {
+  return /^Technique\s+\d+$/i.test(title.trim());
 }
 
 interface TechniqueIndexListProps {
@@ -94,10 +100,13 @@ export function TechniqueIndexList({ techniques, bookId, limit }: TechniqueIndex
           <span
             style={{
               fontSize: 13,
-              color: "var(--text)",
+              color: isStructuralTitle(tech.title) ? "var(--text-3)" : "var(--text)",
+              fontStyle: isStructuralTitle(tech.title) ? "italic" : "normal",
             }}
           >
-            Técnica {tech.techniqueNumber}
+            {isStructuralTitle(tech.title)
+              ? `Técnica ${tech.techniqueNumber} — título pendiente`
+              : tech.title}
           </span>
 
           <span

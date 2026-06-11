@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { computePosition, canNavigateMoves, FALLBACK_FEN } from "../board-utils";
+import { computePosition, canNavigateMoves, getBoardOrientation, FALLBACK_FEN } from "../board-utils";
 
 const STARTING_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 const INVALID_FEN_NO_KING = "8/8/8/8/8/8/pppppppp/8 w - - 0 1";
@@ -70,5 +70,32 @@ describe("computePosition", () => {
     const structuralTitle = "Technique 1";
     const isStructural = /^Technique\s+\d+$/i.test(structuralTitle);
     expect(isStructural).toBe(true);
+  });
+});
+
+describe("getBoardOrientation", () => {
+  it("returns 'white' for white-to-move FEN", () => {
+    expect(getBoardOrientation(FALLBACK_FEN)).toBe("white");
+  });
+
+  it("returns 'white' for black-to-move FEN (board must NOT flip)", () => {
+    const blackToMoveFen = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
+    expect(getBoardOrientation(blackToMoveFen)).toBe("white");
+  });
+
+  it("returns 'white' when called without argument", () => {
+    expect(getBoardOrientation()).toBe("white");
+  });
+
+  it("returns 'white' regardless of FEN active color after multiple moves", () => {
+    // Simulate alternating FENs — orientation must stay stable
+    const fens = [
+      "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
+      "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2",
+      "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2",
+    ];
+    for (const fen of fens) {
+      expect(getBoardOrientation(fen)).toBe("white");
+    }
   });
 });

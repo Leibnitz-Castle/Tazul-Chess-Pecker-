@@ -7,6 +7,8 @@ interface TechniqueItem {
   examplesCount: number;
 }
 
+const STRUCTURAL_TITLE_RE = /^Technique\s+\d+$/i;
+
 interface BookIndexPanelProps {
   bookTitle: string;
   author: string;
@@ -107,9 +109,13 @@ export function BookIndexPanel({
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   lineHeight: 1.3,
+                  fontStyle: STRUCTURAL_TITLE_RE.test(tech.title.trim()) ? "italic" : "normal",
+                  opacity: STRUCTURAL_TITLE_RE.test(tech.title.trim()) ? 0.55 : 1,
                 }}
               >
-                Técnica {tech.techniqueNumber}
+                {STRUCTURAL_TITLE_RE.test(tech.title.trim())
+                  ? `Técnica ${tech.techniqueNumber}`
+                  : tech.title}
               </span>
               <span
                 style={{

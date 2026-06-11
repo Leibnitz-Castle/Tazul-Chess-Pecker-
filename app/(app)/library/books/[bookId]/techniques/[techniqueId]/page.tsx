@@ -10,13 +10,19 @@ interface PageProps {
   params: { bookId: string; techniqueId: string };
 }
 
+const STRUCTURAL_TITLE_RE = /^Technique\s+\d+$/i;
+
+function hasRealTitle(title: string): boolean {
+  return !STRUCTURAL_TITLE_RE.test(title.trim());
+}
+
 export async function generateMetadata({ params }: PageProps) {
   const technique = await getLibraryTechnique(params.techniqueId);
-  return {
-    title: technique
-      ? `Técnica ${technique.techniqueNumber} — ${technique.book.title}`
-      : "Técnica — Biblioteca",
-  };
+  if (!technique) return { title: "Técnica — Biblioteca" };
+  const displayTitle = hasRealTitle(technique.title)
+    ? `${technique.title} — ${technique.book.title}`
+    : `Técnica ${technique.techniqueNumber} — ${technique.book.title}`;
+  return { title: displayTitle };
 }
 
 export default async function TechniqueDetailPage({ params }: PageProps) {
@@ -70,7 +76,10 @@ export default async function TechniqueDetailPage({ params }: PageProps) {
           </Link>
           <span>/</span>
           <span style={{ color: "var(--text-2)" }}>
-            Técnica {technique.techniqueNumber}
+            Técnica {String(technique.techniqueNumber).padStart(2, "0")}
+            {hasRealTitle(technique.title) && (
+              <> — {technique.title}</>
+            )}
           </span>
         </div>
 
@@ -132,12 +141,15 @@ export default async function TechniqueDetailPage({ params }: PageProps) {
           style={{
             fontSize: 16,
             fontWeight: 600,
-            color: "var(--text-2)",
+            color: hasRealTitle(technique.title) ? "var(--text)" : "var(--text-3)",
+            fontStyle: hasRealTitle(technique.title) ? "normal" : "italic",
             flex: 1,
             minWidth: 0,
           }}
         >
-          Título pendiente de edición propia
+          {hasRealTitle(technique.title)
+            ? technique.title
+            : "Título pendiente de edición propia"}
         </h1>
 
         <div
