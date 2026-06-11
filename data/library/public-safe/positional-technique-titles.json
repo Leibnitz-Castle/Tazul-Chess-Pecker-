@@ -1,0 +1,370 @@
+[
+  {
+    "techniqueNumber": 1,
+    "title": "Golpear la unión",
+    "source": "docx-translation",
+    "exportLevel": "PUBLIC_SAFE",
+    "wordCount": 3,
+    "notes": "Título corto extraído de docx_theory[0]. Traducción al español del capítulo 1."
+  },
+  {
+    "techniqueNumber": 2,
+    "title": "Primer método de Botvinnik",
+    "source": "docx-translation",
+    "exportLevel": "PUBLIC_SAFE",
+    "wordCount": 4,
+    "notes": "Extraído de 'Primer método de Botvinnik: e4xf5 g6xf5 f2-f4!' — solo el título, sin la notación de movimientos."
+  },
+  {
+    "techniqueNumber": 3,
+    "title": "La profilaxis de Taimanov",
+    "source": "docx-translation",
+    "exportLevel": "PUBLIC_SAFE",
+    "wordCount": 4,
+    "notes": "Título corto extraído de docx_theory[0]. Traducción al español del capítulo 3."
+  },
+  {
+    "techniqueNumber": 4,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "docx_theory[0] es una descripción larga (11 palabras con notación de jugada). No es un título limpio. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 5,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 6,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 7,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 8,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 9,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 10,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "docx_theory[0] es un párrafo de 65 palabras. No es un título corto. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 11,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "docx_theory[0] es un párrafo de 28 palabras. No es un título corto. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 12,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 13,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 14,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 15,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "docx_theory[0] es un párrafo de 70 palabras. No es un título corto. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 16,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 17,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 18,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 19,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 20,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 21,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 22,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 23,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 24,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 25,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 26,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 27,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 28,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 29,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 30,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "docx_theory[0] es un párrafo de 56 palabras. No es un título corto. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 31,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 32,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 33,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 34,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 35,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 36,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 37,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 38,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 39,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 40,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 41,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 42,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 43,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 44,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 45,
+    "title": null,
+    "source": "pending-manual",
+    "exportLevel": "PENDING",
+    "wordCount": null,
+    "notes": "Sin datos en docx_theory ni en PGN. Pendiente de completar manualmente."
+  },
+  {
+    "techniqueNumber": 46,
+    "title": "Ejercicios",
+    "source": "structural",
+    "exportLevel": "PUBLIC_SAFE",
+    "wordCount": 1,
+    "notes": "Capítulo 46 = capítulo de ejercicios finales del libro. Nombre estructural, no un título de técnica."
+  }
+]

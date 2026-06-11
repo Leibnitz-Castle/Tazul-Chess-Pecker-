@@ -19,6 +19,8 @@
     "library:validate": "tsx scripts/validate-library-public-safe.ts",
     "library:import": "tsx scripts/import-library-book.ts",
     "library:reimport": "tsx scripts/import-library-book.ts --reimport",
+    "library:import-titles": "tsx scripts/import-library-technique-titles.ts",
+    "library:apply-titles": "tsx scripts/import-library-technique-titles.ts --apply",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
