@@ -1,69 +1,50 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { SectionPreviewCard } from "@/components/library/SectionPreviewCard";
 import { IdeaCard } from "@/components/library/IdeaCard";
+import { TechniqueCard } from "@/components/library/TechniqueCard";
+import { getLibraryBook, getLibraryTechniques } from "@/lib/library/queries";
 
 interface PageProps {
   params: { bookId: string };
 }
 
-const BOOK_META: Record<string, { title: string; author: string; subtitle: string }> = {
+const BOOK_FALLBACK: Record<string, { subtitle: string }> = {
   "positional-techniques": {
-    title: "Técnicas del juego posicional",
-    author: "Bronznik & Terekhin",
-    subtitle: "44 técnicas estratégicas para mejorar la comprensión posicional del tablero.",
+    subtitle:
+      "45 técnicas estratégicas del juego posicional — cada una ilustrada con partidas de los grandes maestros.",
   },
 };
 
-const SECTIONS_STUB = [
-  {
-    id: "1",
-    sectionNumber: 1,
-    title: "Técnica 1 — La columna abierta",
-    description:
-      "Uso sistemático de columnas abiertas para penetrar en la posición del oponente.",
-    status: "available" as const,
-    exerciseCount: 8,
-    tags: ["estrategia", "torres", "columnas"],
-    href: "/library/books/positional-techniques/sections/1",
-  },
-  {
-    id: "2",
-    sectionNumber: 2,
-    title: "Técnica 2 — El alfil malo",
-    description:
-      "Identificar y explotar el alfil bloqueado por sus propios peones.",
-    status: "locked" as const,
-    exerciseCount: 6,
-    tags: ["alfiles", "estructura"],
-    href: "/library/books/positional-techniques/sections/2",
-  },
-  {
-    id: "3",
-    sectionNumber: 3,
-    title: "Técnica 3 — El caballo en el puesto avanzado",
-    description:
-      "Crear y mantener un caballo permanente en un casilla poderosa del territorio enemigo.",
-    status: "locked" as const,
-    exerciseCount: 10,
-    tags: ["caballos", "puntos débiles"],
-    href: "/library/books/positional-techniques/sections/3",
-  },
-];
+export default async function BookPage({ params }: PageProps) {
+  const [book, techniquesRaw] = await Promise.all([
+    getLibraryBook(params.bookId),
+    (async () => {
+      try {
+        const b = await getLibraryBook(params.bookId);
+        if (!b) return [];
+        return getLibraryTechniques(b.id);
+      } catch {
+        return [];
+      }
+    })(),
+  ]);
 
-export default function BookPage({ params }: PageProps) {
-  const meta = BOOK_META[params.bookId] ?? {
-    title: params.bookId.replace(/-/g, " "),
-    author: "—",
-    subtitle: "Módulo en construcción.",
-  };
+  if (!book) {
+    notFound();
+  }
+
+  const techniques = techniquesRaw;
+  const fallback = BOOK_FALLBACK[params.bookId];
+  const totalExamples = techniques.reduce((sum, t) => sum + t._count.examples, 0);
+  const isImported = techniques.length > 0;
 
   return (
-    <div className="animate-fade-in" style={{ padding: 28, maxWidth: 900, margin: "0 auto" }}>
+    <div className="animate-fade-in" style={{ padding: 28, maxWidth: 960, margin: "0 auto" }}>
       {/* Breadcrumb */}
-      <div className="eyebrow flex items-center gap-2 mb-5" style={{ flexWrap: "wrap" }}>
+      <div className="eyebrow flex items-center gap-2 mb-5 flex-wrap">
         <Link href="/library" className="hover:text-amber transition-colors">
           Biblioteca Dinámica
         </Link>
@@ -72,7 +53,7 @@ export default function BookPage({ params }: PageProps) {
           Libros
         </Link>
         <span>/</span>
-        <span style={{ color: "var(--text-2)" }}>{meta.title}</span>
+        <span style={{ color: "var(--text-2)" }}>{book.title}</span>
       </div>
 
       {/* Book header */}
@@ -93,39 +74,47 @@ export default function BookPage({ params }: PageProps) {
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2 flex-wrap">
-              <Badge variant="amber" dot>
-                En construcción
-              </Badge>
-              <span style={{ fontSize: 12, color: "var(--text-3)" }}>{meta.author}</span>
+              {isImported ? (
+                <Badge variant="amber" dot>
+                  Disponible
+                </Badge>
+              ) : (
+                <Badge variant="default" dot>
+                  En construcción
+                </Badge>
+              )}
+              <span style={{ fontSize: 12, color: "var(--text-3)" }}>
+                {book.author} · {book.year}
+              </span>
             </div>
             <h1
-              style={{
-                fontSize: 26,
-                fontWeight: 700,
-                letterSpacing: "-0.02em",
-                marginBottom: 8,
-              }}
+              style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 8 }}
             >
-              {meta.title}
+              {book.title}
             </h1>
-            <p style={{ fontSize: 14, color: "var(--text-3)", lineHeight: 1.6, maxWidth: 560 }}>
-              {meta.subtitle}
-            </p>
+            {fallback && (
+              <p style={{ fontSize: 14, color: "var(--text-3)", lineHeight: 1.6, maxWidth: 560 }}>
+                {fallback.subtitle}
+              </p>
+            )}
           </div>
-          <div className="flex items-center gap-3 flex-shrink-0">
-            <Link href={`/library/books/${params.bookId}/sections/1`}>
+          {isImported && (
+            <Link href={`/library/books/${params.bookId}/techniques`}>
               <Button variant="amber" size="sm" icon="bolt">
-                Empezar
+                Explorar técnicas
               </Button>
             </Link>
-          </div>
+          )}
         </div>
 
         {/* Stats */}
-        <div className="flex items-center gap-6 mt-6 pt-5" style={{ borderTop: "1px solid var(--line)" }}>
+        <div
+          className="flex items-center gap-6 mt-6 pt-5"
+          style={{ borderTop: "1px solid var(--line)" }}
+        >
           {[
-            { icon: "layers", label: "Secciones totales", value: "44" },
-            { icon: "puzzle", label: "Ejercicios", value: "~280" },
+            { icon: "layers", label: "Técnicas", value: String(book.techniquesTotal) },
+            { icon: "puzzle", label: "Ejemplos", value: isImported ? String(totalExamples) : "~446" },
             { icon: "clock", label: "Tiempo estimado", value: "40h" },
             { icon: "target", label: "Tu progreso", value: "0%" },
           ].map((s) => (
@@ -140,7 +129,7 @@ export default function BookPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Key ideas preview */}
+      {/* Key ideas */}
       <div style={{ marginBottom: 28 }}>
         <h2 style={{ fontSize: 17, fontWeight: 700, letterSpacing: "-0.01em", marginBottom: 14 }}>
           Ideas clave del libro
@@ -161,27 +150,59 @@ export default function BookPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Sections list */}
+      {/* Techniques list */}
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 style={{ fontSize: 17, fontWeight: 700, letterSpacing: "-0.01em" }}>
-            Secciones — {SECTIONS_STUB.length} de 44 disponibles
+            Técnicas{isImported ? ` — ${techniques.length}` : ""}
           </h2>
-          <Badge variant="default">Datos de ejemplo</Badge>
+          {isImported && (
+            <Link href={`/library/books/${params.bookId}/techniques`}>
+              <Button variant="ghost" size="sm" icon="arrowRight">
+                Ver todas
+              </Button>
+            </Link>
+          )}
         </div>
-        <div className="flex flex-col gap-3">
-          {SECTIONS_STUB.map((s) => (
-            <SectionPreviewCard key={s.id} {...s} />
-          ))}
-        </div>
-        <div
-          className="mt-4 rounded-[12px] p-4 text-center"
-          style={{ background: "var(--surface)", border: "1px dashed var(--line)" }}
-        >
-          <span style={{ fontSize: 13, color: "var(--text-3)" }}>
-            41 secciones adicionales se agregarán al importar el contenido del libro.
-          </span>
-        </div>
+
+        {isImported ? (
+          <div className="grid grid-cols-1 gap-2" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))" }}>
+            {techniques.slice(0, 12).map((tech) => (
+              <TechniqueCard
+                key={tech.id}
+                techniqueNumber={tech.techniqueNumber}
+                title={tech.title}
+                examplesCount={tech._count.examples}
+                difficulty={tech.difficulty}
+                tags={tech.tags}
+                href={`/library/books/${params.bookId}/techniques/${tech.id}`}
+              />
+            ))}
+          </div>
+        ) : (
+          <div
+            className="rounded-[12px] p-8 text-center"
+            style={{ background: "var(--surface)", border: "1px dashed var(--line)" }}
+          >
+            <Icon name="layers" size={24} style={{ color: "var(--text-3)", margin: "0 auto 12px" }} />
+            <p style={{ fontSize: 14, color: "var(--text-3)", marginBottom: 8 }}>
+              Técnicas pendientes de importación
+            </p>
+            <p style={{ fontSize: 12, color: "var(--text-4 )" }}>
+              Ejecuta <code>npm run library:import</code> para cargar los datos del libro.
+            </p>
+          </div>
+        )}
+
+        {isImported && techniques.length > 12 && (
+          <div className="mt-4 text-center">
+            <Link href={`/library/books/${params.bookId}/techniques`}>
+              <Button variant="outline" size="sm">
+                Ver las {techniques.length - 12} técnicas restantes
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
