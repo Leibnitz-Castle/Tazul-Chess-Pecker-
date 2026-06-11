@@ -1,11 +1,19 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Icon } from "@/components/ui/Icon";
-import { TechniqueCard } from "@/components/library/TechniqueCard";
+import { Button } from "@/components/ui/Button";
+import { BookIndexPanel } from "@/components/library/BookIndexPanel";
+import { TechniqueIndexList } from "@/components/library/TechniqueIndexList";
 import { getLibraryBook, getLibraryTechniques } from "@/lib/library/queries";
 
 interface PageProps {
   params: { bookId: string };
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const book = await getLibraryBook(params.bookId);
+  return {
+    title: book ? `Técnicas — ${book.title}` : "Técnicas — Biblioteca",
+  };
 }
 
 export default async function TechniquesPage({ params }: PageProps) {
@@ -13,97 +21,115 @@ export default async function TechniquesPage({ params }: PageProps) {
   if (!book) notFound();
 
   const techniques = await getLibraryTechniques(book.id);
-
   const totalExamples = techniques.reduce((sum, t) => sum + t._count.examples, 0);
+  const firstTechnique = techniques[0];
+
+  const techniqueItems = techniques.map((t) => ({
+    id: t.id,
+    techniqueNumber: t.techniqueNumber,
+    title: t.title,
+    examplesCount: t._count.examples,
+  }));
 
   return (
-    <div className="animate-fade-in" style={{ padding: 28, maxWidth: 1100, margin: "0 auto" }}>
-      {/* Breadcrumb */}
-      <div className="eyebrow flex items-center gap-2 mb-5 flex-wrap">
-        <Link href="/library" className="hover:text-amber transition-colors">
-          Biblioteca Dinámica
-        </Link>
-        <span>/</span>
-        <Link href="/library/books" className="hover:text-amber transition-colors">
-          Libros
-        </Link>
-        <span>/</span>
-        <Link
-          href={`/library/books/${params.bookId}`}
-          className="hover:text-amber transition-colors"
-        >
-          {book.title}
-        </Link>
-        <span>/</span>
-        <span style={{ color: "var(--text-2)" }}>Técnicas</span>
+    <div
+      className="animate-fade-in"
+      style={{ display: "flex", minHeight: "calc(100vh - 64px)" }}
+    >
+      {/* Left index panel — sticky, desktop only */}
+      <div
+        className="hidden md:flex"
+        style={{
+          width: 230,
+          flexShrink: 0,
+          borderRight: "1px solid var(--line)",
+          position: "sticky",
+          top: 64,
+          height: "calc(100vh - 64px)",
+          overflow: "hidden",
+        }}
+      >
+        <BookIndexPanel
+          bookTitle={book.title}
+          author={book.author}
+          techniques={techniqueItems}
+          bookId={params.bookId}
+        />
       </div>
 
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
-        <div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, letterSpacing: "-0.02em" }}>
-            {techniques.length} Técnicas
-          </h1>
-          <p style={{ fontSize: 13, color: "var(--text-3)", marginTop: 4 }}>
-            {totalExamples} examples totales · {book.author}
-          </p>
+      {/* Main content */}
+      <div style={{ flex: 1, minWidth: 0, padding: "28px 32px" }}>
+        {/* Breadcrumb */}
+        <div className="eyebrow flex items-center gap-2 mb-6 flex-wrap">
+          <Link href="/library" className="hover:text-amber transition-colors">
+            Biblioteca Dinámica
+          </Link>
+          <span>/</span>
+          <Link
+            href={`/library/books/${params.bookId}`}
+            className="hover:text-amber transition-colors"
+          >
+            {book.title}
+          </Link>
+          <span>/</span>
+          <span style={{ color: "var(--text-2)" }}>Índice de técnicas</span>
         </div>
 
-        {/* Stats bar */}
-        <div className="flex items-center gap-4">
-          {[
-            { icon: "layers", label: "técnicas", value: techniques.length },
-            { icon: "puzzle", label: "ejemplos", value: totalExamples },
-          ].map((s) => (
-            <div
-              key={s.label}
-              className="flex items-center gap-2 rounded-[10px] px-3 py-2"
+        {/* Page header */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            gap: 16,
+            marginBottom: 20,
+            flexWrap: "wrap",
+          }}
+        >
+          <div>
+            <h1
               style={{
-                background: "var(--surface)",
-                border: "1px solid var(--line)",
-                fontSize: 13,
+                fontSize: 22,
+                fontWeight: 700,
+                letterSpacing: "-0.02em",
+                marginBottom: 4,
               }}
             >
-              <Icon name={s.icon} size={13} style={{ color: "var(--amber)" }} />
-              <span style={{ fontWeight: 700, color: "var(--text)" }}>{s.value}</span>
-              <span style={{ color: "var(--text-3)" }}>{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+              {book.title}
+            </h1>
+            <p style={{ fontSize: 13, color: "var(--text-3)" }}>
+              {book.author} · {techniques.length} técnicas · {totalExamples} ejemplos
+            </p>
+          </div>
 
-      {/* Grid */}
-      {techniques.length === 0 ? (
-        <div
-          className="rounded-[14px] p-10 text-center"
-          style={{ background: "var(--surface)", border: "1px dashed var(--line)" }}
-        >
-          <Icon name="layers" size={28} style={{ color: "var(--text-3)", margin: "0 auto 16px" }} />
-          <p style={{ fontSize: 15, color: "var(--text-2)", marginBottom: 6 }}>
-            Sin técnicas importadas todavía
-          </p>
-          <p style={{ fontSize: 13, color: "var(--text-3)" }}>
-            Ejecuta <code>npm run library:import</code> para cargar el libro.
-          </p>
+          {firstTechnique && (
+            <Link href={`/library/books/${params.bookId}/techniques/${firstTechnique.id}`}>
+              <Button variant="amber" size="sm" icon="arrowRight">
+                Empezar por Técnica 1
+              </Button>
+            </Link>
+          )}
         </div>
-      ) : (
-        <div
-          className="grid gap-2"
-          style={{ gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))" }}
-        >
-          {techniques.map((tech) => (
-            <TechniqueCard
-              key={tech.id}
-              techniqueNumber={tech.techniqueNumber}
-              title={tech.title}
-              examplesCount={tech._count.examples}
-              difficulty={tech.difficulty}
-              tags={tech.tags}
-              href={`/library/books/${params.bookId}/techniques/${tech.id}`}
-            />
-          ))}
-        </div>
-      )}
+
+        {/* Full technique index */}
+        {techniques.length === 0 ? (
+          <div
+            style={{
+              padding: "60px 24px",
+              textAlign: "center",
+              borderRadius: 10,
+              border: "1px dashed var(--line)",
+              color: "var(--text-3)",
+              fontSize: 14,
+            }}
+          >
+            Todavía no hay técnicas importadas. Ejecuta{" "}
+            <code style={{ fontSize: 12 }}>npm run library:import</code>.
+          </div>
+        ) : (
+          <TechniqueIndexList techniques={techniqueItems} bookId={params.bookId} />
+        )}
+      </div>
     </div>
   );
 }

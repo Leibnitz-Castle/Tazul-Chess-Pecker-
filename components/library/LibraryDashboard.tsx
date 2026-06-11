@@ -1,204 +1,232 @@
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
-import { LibraryCard, LibraryCardStatus, LibraryCardFeature, LibraryCardAction } from "./LibraryCard";
 
-interface BookModule {
+interface ShelfModule {
   id: string;
   title: string;
   subtitle: string;
-  status: LibraryCardStatus;
-  icon: string;
-  accentColor: string;
-  features: LibraryCardFeature[];
-  primaryAction: LibraryCardAction;
-  secondaryAction?: LibraryCardAction;
+  meta?: string;
+  status: "available" | "coming_soon" | "future";
+  href: string;
 }
 
-const MODULES: BookModule[] = [
+const MODULES: ShelfModule[] = [
   {
     id: "positional-techniques",
     title: "Técnicas del juego posicional",
-    subtitle:
-      "44 técnicas estratégicas para mejorar la comprensión posicional. Bronznik & Terekhin.",
-    status: "building",
-    icon: "book",
-    accentColor: "var(--amber)",
-    features: [
-      { icon: "bolt", label: "Ideas clave" },
-      { icon: "target", label: "Posiciones modelo" },
-      { icon: "puzzle", label: "Ejercicios interactivos" },
-      { icon: "chart", label: "Progreso por técnica" },
-      { icon: "refresh", label: "Repetición tipo Woodpecker" },
-    ],
-    primaryAction: {
-      label: "Abrir biblioteca",
-      href: "/library/books/positional-techniques",
-      icon: "book",
-    },
-    secondaryAction: {
-      label: "Ver plan",
-      href: "/library/strategy",
-      icon: "arrowRight",
-    },
+    subtitle: "Bronznik & Terekhin · 2013",
+    meta: "46 técnicas · 446 ejemplos",
+    status: "available",
+    href: "/library/books/positional-techniques",
   },
   {
     id: "igor-smirnov",
     title: "Igor Smirnov",
-    subtitle:
-      "Cursos, principios y métodos de entrenamiento organizados por temas.",
+    subtitle: "Cursos de entrenamiento",
     status: "coming_soon",
-    icon: "star",
-    accentColor: "#7A9EA8",
-    features: [
-      { icon: "target", label: "Cálculo" },
-      { icon: "bolt", label: "Ataque" },
-      { icon: "layers", label: "Defensa" },
-      { icon: "clock", label: "Pensamiento práctico" },
-      { icon: "flame", label: "Toma de decisiones" },
-      { icon: "star", label: "Repertorio mental" },
-    ],
-    primaryAction: {
-      label: "Abrir cursos",
-      href: "/library/igor-smirnov",
-      icon: "arrowRight",
-    },
-    secondaryAction: {
-      label: "Ver estructura",
-      href: "/library/igor-smirnov",
-      icon: "grid",
-    },
+    href: "#",
   },
   {
     id: "my-collections",
     title: "Mis colecciones",
-    subtitle:
-      "Crea tu propia biblioteca de estudio con posiciones, ideas y ejercicios.",
+    subtitle: "Material propio",
     status: "future",
-    icon: "layers",
-    accentColor: "#7D9E82",
-    features: [
-      { icon: "plus", label: "Crear colección" },
-      { icon: "upload", label: "Importar material" },
-      { icon: "book", label: "Tus posiciones" },
-      { icon: "puzzle", label: "Ejercicios propios" },
-    ],
-    primaryAction: {
-      label: "Crear colección",
-      href: "/library/books",
-      icon: "plus",
-    },
-    secondaryAction: {
-      label: "Importar material",
-      href: "/library/books",
-      icon: "upload",
-    },
+    href: "#",
   },
 ];
 
-const STATS = [
-  { icon: "library", label: "Módulos", value: "3" },
-  { icon: "bolt", label: "En construcción", value: "1" },
-  { icon: "clock", label: "Próximamente", value: "2" },
-  { icon: "puzzle", label: "Ejercicios totales", value: "—" },
-];
+const STATUS_LABELS: Record<ShelfModule["status"], string> = {
+  available: "Disponible",
+  coming_soon: "Próximamente",
+  future: "Futuro",
+};
 
 export function LibraryDashboard() {
   return (
-    <div className="animate-fade-in" style={{ padding: 28, maxWidth: 1200, margin: "0 auto" }}>
-      {/* Page header */}
-      <div style={{ marginBottom: 28 }}>
+    <div className="animate-fade-in" style={{ padding: "32px 28px", maxWidth: 780, margin: "0 auto" }}>
+      <div style={{ marginBottom: 36 }}>
         <div className="eyebrow">Módulos de estudio</div>
         <h1
           style={{
-            fontSize: 30,
+            fontSize: 28,
             fontWeight: 700,
             letterSpacing: "-0.02em",
             marginTop: 6,
-            marginBottom: 10,
+            marginBottom: 8,
           }}
         >
           Biblioteca Dinámica
         </h1>
-        <p style={{ fontSize: 14, color: "var(--text-3)", maxWidth: 560, lineHeight: 1.6 }}>
-          Libros y cursos ajedrecísticos convertidos en módulos interactivos de aprendizaje. Estudio
-          profundo, ejercicios, progreso y repetición espaciada.
+        <p style={{ fontSize: 14, color: "var(--text-3)", lineHeight: 1.6, maxWidth: 480 }}>
+          Estudia libros, cursos y colecciones como módulos interactivos de ajedrez.
         </p>
       </div>
 
-      {/* Stats bar */}
       <div
-        className="flex items-center gap-2 rounded-[12px] px-5 py-4 mb-8 flex-wrap"
-        style={{ background: "var(--surface)", border: "1px solid var(--line)" }}
+        style={{
+          border: "1px solid var(--line)",
+          borderRadius: 14,
+          overflow: "hidden",
+        }}
       >
-        {STATS.map((s, i) => (
-          <div key={s.label} className="flex items-center gap-2">
-            <div
-              className="w-[34px] h-[34px] rounded-[8px] flex items-center justify-center flex-shrink-0"
-              style={{ background: "var(--bg-2)", color: "var(--text-3)" }}
-            >
-              <Icon name={s.icon} size={15} />
-            </div>
-            <div>
-              <div
-                style={{
-                  fontSize: 16,
-                  fontWeight: 700,
-                  letterSpacing: "-0.02em",
-                  color: "var(--text)",
-                  lineHeight: 1.1,
-                }}
-              >
-                {s.value}
-              </div>
-              <div style={{ fontSize: 11, color: "var(--text-3)" }}>{s.label}</div>
-            </div>
-            {i < STATS.length - 1 && (
-              <div style={{ width: 1, height: 28, background: "var(--line)", marginLeft: 10 }} />
-            )}
-          </div>
+        {MODULES.map((mod, i) => (
+          <ShelfEntry key={mod.id} {...mod} isLast={i === MODULES.length - 1} />
         ))}
-        <div className="flex-1" />
-        <div style={{ fontSize: 12, color: "var(--text-3)", textAlign: "right" }}>
-          <div>Más módulos en camino</div>
-          <div style={{ color: "var(--text-2)", fontWeight: 600, marginTop: 2 }}>
-            Contenido en construcción
-          </div>
+      </div>
+
+      <div
+        className="flex items-center gap-2 mt-8"
+        style={{ fontSize: 12, color: "var(--text-3)" }}
+      >
+        <Icon name="book" size={13} style={{ color: "var(--text-3)", flexShrink: 0 }} />
+        <span>
+          Módulo activo:{" "}
+          <Link
+            href="/library/books/positional-techniques"
+            style={{ color: "var(--amber)", textDecoration: "none" }}
+          >
+            Técnicas del juego posicional
+          </Link>
+          . Más módulos se irán añadiendo.
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function ShelfEntry({
+  title,
+  subtitle,
+  meta,
+  status,
+  href,
+  isLast,
+}: ShelfModule & { isLast: boolean }) {
+  const isActive = status === "available";
+
+  const inner = (
+    <div
+      style={{
+        position: "relative",
+        padding: "20px 24px 20px 28px",
+        background: isActive ? "rgba(200,169,107,0.025)" : "var(--surface)",
+        borderBottom: isLast ? "none" : "1px solid var(--line)",
+        display: "flex",
+        alignItems: "center",
+        gap: 18,
+        transition: isActive ? "background 0.15s" : undefined,
+      }}
+      className={isActive ? "group hover:bg-[rgba(200,169,107,0.05)]" : ""}
+    >
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          bottom: 0,
+          width: 3,
+          borderRadius: "14px 0 0 14px",
+          background: "var(--amber)",
+          opacity: isActive ? 0.75 : 0.18,
+        }}
+      />
+
+      <div
+        style={{
+          width: 38,
+          height: 38,
+          borderRadius: 8,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: isActive ? "rgba(200,169,107,0.10)" : "var(--bg-2)",
+          color: isActive ? "var(--amber)" : "var(--text-3)",
+          flexShrink: 0,
+          border: "1px solid var(--line)",
+        }}
+      >
+        <Icon name="book" size={17} />
+      </div>
+
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div
+          style={{
+            fontSize: 15,
+            fontWeight: 700,
+            letterSpacing: "-0.01em",
+            color: isActive ? "var(--text)" : "var(--text-2)",
+            marginBottom: 3,
+          }}
+        >
+          {title}
+        </div>
+        <div style={{ fontSize: 12, color: "var(--text-3)", lineHeight: 1.4 }}>
+          {subtitle}
+          {meta && (
+            <>
+              <span style={{ margin: "0 7px", opacity: 0.35 }}>·</span>
+              {meta}
+            </>
+          )}
         </div>
       </div>
 
-      {/* Cards grid */}
-      <div
-        className="stagger"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: 20,
-          alignItems: "stretch",
-        }}
-      >
-        {MODULES.map((m, i) => (
-          <LibraryCard key={m.id} {...m} delay={i * 80} />
-        ))}
-      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: 14, flexShrink: 0 }}>
+        <span
+          style={{
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.07em",
+            textTransform: "uppercase",
+            color: isActive ? "var(--amber)" : "var(--text-3)",
+            opacity: isActive ? 1 : 0.6,
+          }}
+        >
+          {STATUS_LABELS[status]}
+        </span>
 
-      {/* Openings stand-by note */}
-      <div
-        className="flex items-center gap-3 mt-10 rounded-[12px] p-4"
-        style={{
-          background: "rgba(200,169,107,0.04)",
-          border: "1px solid rgba(200,169,107,0.12)",
-        }}
-      >
-        <Icon name="bolt" size={16} style={{ color: "var(--amber)", flexShrink: 0 }} />
-        <p style={{ fontSize: 13, color: "var(--text-3)", lineHeight: 1.5 }}>
-          <strong style={{ color: "var(--text-2)" }}>Aperturas Pecker</strong> está temporalmente en
-          stand-by. El módulo de repertorios sigue accesible en{" "}
-          <Link href="/openings" style={{ color: "var(--amber)", textDecoration: "none" }}>
-            /openings
-          </Link>
-          .
-        </p>
+        {isActive ? (
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 5,
+              padding: "6px 14px",
+              borderRadius: 8,
+              background: "var(--amber)",
+              color: "#1E1812",
+              fontSize: 12,
+              fontWeight: 700,
+            }}
+          >
+            Entrar
+            <Icon name="arrowRight" size={12} />
+          </span>
+        ) : (
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "6px 14px",
+              borderRadius: 8,
+              border: "1px solid var(--line)",
+              color: "var(--text-3)",
+              fontSize: 12,
+              opacity: 0.45,
+            }}
+          >
+            —
+          </span>
+        )}
       </div>
     </div>
+  );
+
+  return isActive ? (
+    <Link href={href} style={{ display: "block", textDecoration: "none" }}>
+      {inner}
+    </Link>
+  ) : (
+    inner
   );
 }
