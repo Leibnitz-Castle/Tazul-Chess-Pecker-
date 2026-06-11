@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 const NAV = [
   { id: "dashboard", label: "Home", icon: "home", href: "/dashboard" },
   { id: "practice", label: "Practice", icon: "practice", href: "/practice" },
-  { id: "openings", label: "Openings", icon: "openings", href: "/openings" },
+  { id: "library", label: "Biblioteca Dinámica", icon: "library", href: "/library" },
   { id: "warehouse", label: "Elite Warehouse", icon: "warehouse", href: "/elite-warehouse" },
   { id: "profile", label: "Profile", icon: "profile", href: "/profile" },
 ];

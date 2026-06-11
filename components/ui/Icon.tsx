@@ -34,6 +34,7 @@ const ICONS: Record<string, string> = {
   upload: "M12 16V4M7 9l5-5 5 5M5 20h14",
   puzzle: "M9 4h6v3a2 2 0 1 0 4 0V4h1v5h-3a2 2 0 1 0 0 4h3v5h-5v-3a2 2 0 1 0-4 0v3H4v-5h3a2 2 0 1 0 0-4H4V4h5Z",
   book: "M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15Z",
+  library: "M2 3h5v16H2ZM9 6h5v13H9ZM16 9h5v10h-5ZM1 21h22",
 };
 
 interface IconProps {
